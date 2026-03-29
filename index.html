@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>House Price Prediction</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            margin: 50px auto;
+            width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        h2 {
+            color: #333;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🏠 House Price Prediction</h2>
+
+    <input type="number" id="income" placeholder="Avg Area Income">
+    <input type="number" id="house_age" placeholder="House Age">
+    <input type="number" id="rooms" placeholder="Number of Rooms">
+    <input type="number" id="bedrooms" placeholder="Bedrooms">
+    <input type="number" id="population" placeholder="Population">
+
+    <button onclick="predict()">Predict Price</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+function predict() {
+    const data = {
+        income: document.getElementById("income").value,
+        house_age: document.getElementById("house_age").value,
+        rooms: document.getElementById("rooms").value,
+        bedrooms: document.getElementById("bedrooms").value,
+        population: document.getElementById("population").value
+    };
+
+    fetch("/predict", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        document.getElementById("result").innerText =
+            "💰 Predicted Price: " + result.predicted_price;
+    });
+}
+</script>
+
+</body>
+</html>
